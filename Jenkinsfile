@@ -1,32 +1,12 @@
-pipeline{
+node {
+    checkout scm
 
-	agent any
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerHub')
-	}
+        def customImage = docker.build("achalrc/nodeapp:latest")
 
-	stages {
-
-		stage('Build') {
-
-			steps {
-				sh 'docker build -t achalrc/nodeapp:latest .'
-			}
-		}
-		
-		stage('Publish image to Docker Hub') {
-          
-            		steps {
-				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-					sh  'docker push achalrc/nodeapp:latest'
-				}
-                  
-          		}
-        	}
-
-
-	}
-
-
+        /* Push the container to the custom Registry */
+        customImage.push()
+    }
 }
+
