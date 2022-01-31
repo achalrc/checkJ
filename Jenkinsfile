@@ -2,7 +2,7 @@ node {
 
     checkout scm
 
-    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
 
         def customImage = docker.build("achalrc/checkJ")
 
